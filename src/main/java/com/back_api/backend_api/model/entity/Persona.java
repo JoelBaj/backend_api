@@ -20,14 +20,14 @@ public class Persona implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPersona;
 
-    @Column(name= "nombre", length = 60)
-    private String Nombre;
-    @Column(name= "apellido", length = 60)
-    private String Apellido;
-    @Column(name= "identificacion", length = 20)
-    private String Identificacion;
+    @Column(name= "nombre")
+    private String nombre;
+    @Column(name= "apellido")
+    private String apellido;
+    @Column(name= "identificacion")
+    private String identificacion;
     @Column(name= "fecha_nacimiento")
-    private Date FechaNacimiento;
+    private Date fechaNacimiento;
 
     @OneToMany(mappedBy = "persona")
     private List<Usuario> usuario;

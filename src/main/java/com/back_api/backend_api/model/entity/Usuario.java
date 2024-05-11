@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,18 +18,21 @@ public class Usuario implements Serializable {
     @Id
     @Column(name = "id_usuario")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer IdUsuario;
-    @Column(name = "username", length = 50)
-    private String UserName;
-    @Column(name = "password", length = 50)
-    private String Password;
-    @Column(name = "mail", length = 120)
-    private String Mail;
-    @Column(name = "sessionactive", length = 10)
-    private String SessionActive;
-    @Column(name = "status", length = 20)
-    private String Status;
-
+    private Integer idusuario;
+    @Column(name = "username")
+    private String username;
+    @Column(name = "password")
+    private String password;
+    @Column(name = "mail")
+    private String mail;
+    @Column(name = "sessionactive")
+    private String sessionActive;
+    @Column(name = "status")
+    private String status;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id_rol"))
+    private List<Rol> roles = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "id_persona")
     private Persona persona;

@@ -18,9 +18,9 @@ public class Session implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "fecha_ingreso")
-    private Date FechaIngreso;
+    private Date fechaIngreso;
     @Column(name = "fecha_cierre")
-    private Date FechaCierre;
+    private Date fechaCierre;
 
 
     @ManyToOne

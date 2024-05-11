@@ -16,10 +16,9 @@ public class Rol implements Serializable {
     @Id
     @Column(name = "id_rol")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer IdRol;
-    @Column(name = "rol_name")
-    private String RolName;
-    @OneToMany(mappedBy = "rol")
-    private List<Rol_Usuario> rol_usuarios;
+    private Integer idrol;
+    @Column(name = "name")
+    private String name;
+
 
 }
