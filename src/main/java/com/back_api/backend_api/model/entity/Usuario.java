@@ -1,5 +1,6 @@
 package com.back_api.backend_api.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,6 +35,7 @@ public class Usuario implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id_rol"))
     private List<Rol> roles = new ArrayList<>();
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "id_persona")
     private Persona persona;
     @OneToMany(mappedBy = "usuario")

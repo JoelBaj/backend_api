@@ -1,5 +1,6 @@
 package com.back_api.backend_api.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +25,7 @@ public class Session implements Serializable {
 
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 }
