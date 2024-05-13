@@ -29,7 +29,7 @@ public class Persona implements Serializable {
     private String identificacion;
     @Column(name= "fecha_nacimiento")
     private Date fechaNacimiento;
-    @JsonIgnore
-    @OneToMany(mappedBy = "persona")
-    private List<Usuario> usuario;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "persona")
+//    private List<Usuario> usuario;
 }

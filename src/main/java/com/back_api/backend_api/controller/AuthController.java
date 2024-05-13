@@ -3,7 +3,7 @@ package com.back_api.backend_api.controller;
 import com.back_api.backend_api.SecurityConfig.JWTGenerator;
 import com.back_api.backend_api.model.Dto.AuthResponseDTO;
 import com.back_api.backend_api.model.Dto.LoginDto;
-import com.back_api.backend_api.model.Dto.RegisterDto;
+import com.back_api.backend_api.model.Dto.CreateUsuarioDto;
 import com.back_api.backend_api.model.entity.Rol;
 import com.back_api.backend_api.model.entity.Usuario;
 import com.back_api.backend_api.model.repository.RolRepository;
@@ -24,6 +24,7 @@ import com.back_api.backend_api.SecurityConfig.CustomUserDetailsService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RestController
@@ -77,26 +78,45 @@ public class AuthController {
 
 
     @PostMapping("register")
-    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-        if (usuarioRepository.existsByUsername(registerDto.getUsername())) {
-            return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> register(@RequestBody CreateUsuarioDto createUsuarioDto) {
+
+        if (usuarioRepository.existsByUsername(createUsuarioDto.getUsername())) {
+            return new ResponseEntity<>("Username ya existe, elige otro.", HttpStatus.BAD_REQUEST);
         }
 
-        Usuario usuario = new Usuario();
-        usuario.setUsername(registerDto.getUsername());
-        usuario.setPassword(passwordEncoder.encode((registerDto.getPassword())));
+        if (!createUsuarioDto.getIdentificacion().matches("\\d{10}")) {
+            return new ResponseEntity<>("La identificación debe tener exactamente 10 dígitos.", HttpStatus.BAD_REQUEST);
+        }
+        // Validar el correo electrónico
+        if (!isValidEmail(createUsuarioDto.getMail())) {
+            return new ResponseEntity<>("El correo electrónico no es válido.", HttpStatus.BAD_REQUEST);
+        }
 
-        // Obtener el rol seleccionado por su nombre
-        Rol rol = rolRepository.findByName(registerDto.getRole())
+
+        Usuario usuario = new Usuario();
+        usuario.setUsername(createUsuarioDto.getUsername());
+        usuario.setMail(createUsuarioDto.getMail());
+        usuario.setNombre(createUsuarioDto.getNombre());
+        usuario.setApellido(createUsuarioDto.getApellido());
+        usuario.setIdentificacion(createUsuarioDto.getIdentificacion());
+        usuario.setPassword(passwordEncoder.encode((createUsuarioDto.getPassword())));
+
+
+        Rol rol = rolRepository.findByName(createUsuarioDto.getRole())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
 
-        // Asignar el rol al usuario
         usuario.setRoles(Collections.singletonList(rol));
 //        Rol roles = rolRepository.findByName("USER").get();
 //        usuario.setRoles(Collections.singletonList(roles));
 
         usuarioRepository.save(usuario);
 
-        return new ResponseEntity<>("User registered success!", HttpStatus.OK);
+        return new ResponseEntity<>("usuario registrado correctamente!", HttpStatus.OK);
+
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailPattern = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:gmail|hotmail)\\.(com)$";
+        return Pattern.matches(emailPattern, email);
     }
 }
