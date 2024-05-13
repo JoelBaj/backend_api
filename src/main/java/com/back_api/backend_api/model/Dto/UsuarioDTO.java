@@ -16,7 +16,9 @@ public class UsuarioDTO {
     private String mail;
     private String sessionActive;
     private String status;
-    private Persona persona;
+    private String nombre;
+    private String apellido;
+    private String identificacion;
     private List<Rol> roles;
     private List<Session> sesiones;
 

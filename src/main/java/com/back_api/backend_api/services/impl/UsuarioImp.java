@@ -31,7 +31,7 @@ public class UsuarioImp implements UsuarioService {
 
     @Autowired
     public UsuarioImp(ObjectMapper objectMapper) throws Exception {
-        //this.userSchema = JsonSchemaLoader.loadSchemaFromInputStream(getClass().getResourceAsStream("/json/client-schema.json"));
+
         this.objectMapper = objectMapper;
     }
 
@@ -65,7 +65,26 @@ public class UsuarioImp implements UsuarioService {
 
     @Override
     public ResponseData findById(Integer id) {
-        return null;
+        ResponseData response = new ResponseData();
+        Map<String, Object> mapUsuario = new HashMap<>();
+        try {
+            Usuario usuario = usuarioRepository.findById(id).orElse(null);
+            if (usuario != null) {
+                UsuarioDTO usuarioDTO = convertToDTO01(usuario);
+                mapUsuario.put("usuario", usuarioDTO);
+                response.setData(mapUsuario);
+                response.setCode(MessageUtil.OK.name());
+                response.setMessage(MessageUtil.OK.getKey());
+            } else {
+                response.setCode(MessageUtil.NOTFOUND.name());
+                response.setMessage(MessageUtil.NOTFOUND.getKey());
+            }
+
+        } catch (Exception e) {
+            response.setCode(MessageUtil.ERRORCONSULTA.name());
+            response.setMessage(MessageUtil.ERRORCONSULTA.getKey() + e.getMessage());
+        }
+        return response;
     }
 
     @Override

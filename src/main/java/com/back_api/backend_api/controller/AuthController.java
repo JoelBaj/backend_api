@@ -104,7 +104,6 @@ public class AuthController {
 
         Rol rol = rolRepository.findByName(createUsuarioDto.getRole())
                 .orElseThrow(() -> new RuntimeException("Role not found"));
-
         usuario.setRoles(Collections.singletonList(rol));
 //        Rol roles = rolRepository.findByName("USER").get();
 //        usuario.setRoles(Collections.singletonList(roles));

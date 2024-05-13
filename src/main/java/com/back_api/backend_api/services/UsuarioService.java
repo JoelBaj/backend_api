@@ -10,7 +10,7 @@ import org.modelmapper.ModelMapper;
 
 import java.util.List;
 
-@Service
+
 public interface UsuarioService {
     public ResponseData findAll();
     public ResponseData findById(Integer id) ;
